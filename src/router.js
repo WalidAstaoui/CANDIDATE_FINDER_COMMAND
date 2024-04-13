@@ -6,6 +6,6 @@ const dataRouter = require("./modules/data/data.router");
 const router = express.Router();
 
 router.use('/jobs', authRouter);
-router.use('/users', isAuthenticated, dataRouter);
+router.use('/candidates', isAuthenticated, dataRouter);
 
 module.exports = router;
