@@ -1,11 +1,12 @@
 const express = require('express');
-const {isAuthenticated} = require("./common/middleware/auth.middleware");
-const authRouter = require("./modules/auth/auth.router");
-const dataRouter = require("./modules/data/data.router");
+const candidatesRouter = require("./modules/candidates/candidates.router");
+const applicationsRouter = require("./modules/applications/applications.router");
+const jobsRouter = require("./modules/jobs/jobs.router");
 
 const router = express.Router();
 
-router.use('/jobs', authRouter);
-router.use('/candidates', isAuthenticated, dataRouter);
+router.use('/jobs', jobsRouter);
+router.use('/candidates', candidatesRouter);
+router.use('/applications', applicationsRouter);
 
 module.exports = router;
