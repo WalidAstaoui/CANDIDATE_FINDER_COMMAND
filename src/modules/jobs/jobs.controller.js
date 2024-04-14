@@ -7,7 +7,7 @@ const JobsController = {
     },
 
     upsert: async (req, res) => {
-        const created = await JobsService.upsert(req.body.userId, req.body.title, req.body.description, req.body.company);
+        const created = await JobsService.upsert(req.body.title, req.body.description, req.body.company);
         return res.status(created ? 201 : 200).send();
     },
 };
