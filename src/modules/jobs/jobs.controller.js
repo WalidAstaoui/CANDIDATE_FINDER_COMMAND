@@ -7,8 +7,13 @@ const JobsController = {
     },
 
     upsert: async (req, res) => {
-        const created = await JobsService.upsert(req.body.title, req.body.description, req.body.company);
-        return res.status(created ? 201 : 200).send();
+        try {
+            await JobsService.addJob(req.body.title, req.body.description, req.body.company);
+            return res.status(202).send("Job ajouté !");
+        } catch (err) {
+            console.log(err);
+            throw err;
+        }
     },
 };
 

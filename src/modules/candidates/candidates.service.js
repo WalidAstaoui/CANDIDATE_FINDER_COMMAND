@@ -1,13 +1,13 @@
 const pg = require('pg');
 const UnauthorizedError = require("../../common/errors/unauthorized.error");
-const { getAll } = require('./candidates.controller');
+const fs = require('fs');
 
 const config = {
-    host: "candidate-finder-db.postgres.database.azure.com",
-    user: "asta-admin",
-    password: "Postgre454545Wa",
-    database: "postgres",
-    port: 5432,
+    host:"candidate-finder-db.postgres.database.azure.com", 
+    user:"asta_admin", 
+    password:"Postgre454545Wa", 
+    database:"postgres", 
+    port:5432,
     ssl: true
 };
 
@@ -17,12 +17,14 @@ const CandidatesService = {
         await client.connect();
 
         try {
-            const res = await pool.query('SELECT * FROM candidates');
+            let query = `SELECT * FROM candidates`;
+            const res = await client.query(query);
             return res.rows;
         } catch (err) {
             console.log(err);
             throw err;
-        } finally {
+        } 
+        finally {
             await client.end();
         }
     },

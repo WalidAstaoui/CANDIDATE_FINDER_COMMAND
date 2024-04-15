@@ -14,7 +14,7 @@ app.use('/v1', router);
 
 app.use(errorMiddleware);
 
-const port = 8080;
+const port = 9000;
 
 const server = http.createServer(app);
 
