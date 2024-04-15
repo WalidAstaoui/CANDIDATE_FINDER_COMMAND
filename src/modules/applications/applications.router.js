@@ -4,6 +4,6 @@ const validator = require("../../common/middleware/validator.middleware");
 const {createApplication} = require("./applications.dtos");
 const applicationsRouter = Router();
 
-applicationsRouter.post('/:candidateId/:', validator.body(createApplication), ApplicationsController.upsert);
+applicationsRouter.post('/', validator.body(createApplication), ApplicationsController.upsert);
 
 module.exports = applicationsRouter;

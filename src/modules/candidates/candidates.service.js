@@ -1,6 +1,4 @@
 const pg = require('pg');
-const UnauthorizedError = require("../../common/errors/unauthorized.error");
-const fs = require('fs');
 
 const config = {
     host:"candidate-finder-db.postgres.database.azure.com", 
