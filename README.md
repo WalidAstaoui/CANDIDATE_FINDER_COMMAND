@@ -96,4 +96,4 @@ Exemple de corps de requête :
 
 ## Sur l'app Azure
 
-URL publique : ```https://candidate-finder-app.azurewebsites.net/v1/candidates/```
+URL publique : ```https://candidate-finder-app.azurewebsites.net/```
