@@ -5,8 +5,7 @@ const {createCandidate} = require("./candidates.dtos");
 const candidatesRouter = Router();
 
 // A user
-candidatesRouter.get('/', CandidatesController.getAll);
-
 candidatesRouter.post('/', validator.body(createCandidate), CandidatesController.upsert);
+candidatesRouter.post('/addAll/', CandidatesController.upsertAll);
 
 module.exports = candidatesRouter;

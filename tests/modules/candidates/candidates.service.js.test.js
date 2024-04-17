@@ -24,19 +24,6 @@ describe('CandidatesService', () => {
         jest.clearAllMocks();
     });
 
-    describe('getAll', () => {
-        it('should get all candidates', async () => {
-            const rows = [{ id: 1 }, { id: 2 }];
-            client.query.mockResolvedValueOnce({ rows });
-
-            const result = await CandidatesService.getAll();
-
-            expect(result).toEqual(rows);
-            expect(client.connect).toBeCalledTimes(1);
-            expect(client.query).toBeCalledWith('SELECT * FROM candidates');
-        });
-    });
-
     describe('addCandidate', () => {
         it('should add a new candidate', async () => {
             const name = 'John Doe';
@@ -53,4 +40,26 @@ describe('CandidatesService', () => {
                 [name, email, phone, cv]
             );});
     });
+
+    describe('addCandidates', () => {
+        it('should add multiple candidates', async () => {
+            const candidates = [
+                { name: 'John Doe', email: 'john.doe@gmail.com', phone: '0123456789', cv: 'Some CV details' },
+                { name: 'Jane Smith', email: 'jane.smith@gmail.com', phone: '9876543210', cv: 'Some other CV details' },
+            ];
+            client.query.mockResolvedValueOnce({ rows: candidates });
+    
+            await CandidatesService.addCandidates(candidates);
+            expect(client.connect).toBeCalledTimes(1);
+            candidates.forEach((candidate, index) => {
+                expect(client.query).toHaveBeenNthCalledWith(
+                    index + 1,
+                    "INSERT INTO candidates (name, email, phone, cv) VALUES ($1, $2, $3, $4)",
+                    [candidate.name, candidate.email, candidate.phone, candidate.cv]
+                );
+            });
+        });
+    });
+
+    
 });

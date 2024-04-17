@@ -24,19 +24,6 @@ describe('JobsService', () => {
         jest.clearAllMocks();
     });
 
-    describe('getAll', () => {
-        it('should get all jobs', async () => {
-            const rows = [{ id: 1 }, { id: 2 }];
-            client.query.mockResolvedValueOnce({ rows });
-
-            const result = await JobsService.getAll();
-
-            expect(result).toEqual(rows);
-            expect(client.connect).toBeCalledTimes(1);
-            expect(client.query).toBeCalledWith('SELECT * FROM jobs');
-        });
-    });
-
     describe('addJob', () => {
         it('should add a new job', async () => {
             const title = 'Software Engineer';
@@ -51,6 +38,27 @@ describe('JobsService', () => {
                 "INSERT INTO jobs (title, description, company) VALUES ($1, $2, $3)",
                 [title, description, company]
             );
+        });
+    });
+
+    describe('addJobs', () => {
+        it('should add multiple jobs', async () => {
+            const jobs = [
+                { title: 'Software Engineer', description: 'Develop and maintain software', company: 'Tech Company' },
+                { title: 'Data Analyst', description: 'Analyze and interpret data', company: 'Data Company' },
+                { title: 'Product Manager', description: 'Manage product development', company: 'Product Company' },
+            ];
+            client.query.mockResolvedValueOnce({ rows: jobs });
+
+            await JobsService.addJobs(jobs);
+            expect(client.connect).toBeCalledTimes(1);
+            jobs.forEach((job, index) => {
+                expect(client.query).toHaveBeenNthCalledWith(
+                    index + 1,
+                    "INSERT INTO jobs (title, description, company) VALUES ($1, $2, $3)",
+                    [job.title, job.description, job.company]
+                );
+            });
         });
     });
 });

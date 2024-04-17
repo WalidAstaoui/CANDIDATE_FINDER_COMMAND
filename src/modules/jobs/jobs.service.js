@@ -10,22 +10,6 @@ const config = {
 };
 
 const JobsService = {
-    getAll: async () => {
-        const client = new pg.Client(config);
-        await client.connect();
-
-        try {
-            let query = `SELECT * FROM jobs`;
-            const res = await client.query(query);
-            return res.rows;
-        } catch (err) {
-            console.log(err);
-            throw err;
-        } 
-        finally {
-            await client.end();
-        }
-    },
 
     addJob: async (title, description, company) => {
         const client = new pg.Client(config);
@@ -35,6 +19,25 @@ const JobsService = {
             const query = 'INSERT INTO jobs (title, description, company) VALUES ($1, $2, $3)';
             const values = [title, description, company];
             await client.query(query, values);
+        } catch (err) {
+            console.log(err);
+            throw err;
+        } finally {
+            await client.end();
+        }
+    },
+
+    addJobs: async (jobs) => {
+        const client = new pg.Client(config);
+        await client.connect();
+
+        try {
+            for (const job of jobs) {
+                const { title, description, company } = job;
+                const query = 'INSERT INTO jobs (title, description, company) VALUES ($1, $2, $3)';
+                const values = [title, description, company];
+                await client.query(query, values);
+            }
         } catch (err) {
             console.log(err);
             throw err;
